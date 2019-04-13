@@ -1,4 +1,7 @@
 module.exports = {
     adminPassword: "",
-    port: 2928
+    port: 2928,
+    mongoAddress: "",
+    mongoDatabase: "",
+    mongoPrefix: ""
 }
