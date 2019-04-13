@@ -1,0 +1,19 @@
+{
+  "name": "opinions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "application.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nixerus/opinions.git"
+  },
+  "author": "Ben Houghton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nixerus/opinions/issues"
+  },
+  "homepage": "https://github.com/nixerus/opinions#readme"
+}
