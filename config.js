@@ -3,5 +3,6 @@ module.exports = {
     port: 2928,
     mongoAddress: "",
     mongoDatabase: "",
-    mongoPrefix: ""
+    mongoPrefix: "",
+    imageUrl: "" // Must be a .PNG!
 }
