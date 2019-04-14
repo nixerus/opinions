@@ -1,5 +1,6 @@
 const Express = require('express');
 const cookieSession = require('cookie-session')
+const config = require('../config/config')
 
 class WebHandler {
     constructor(database){
@@ -13,11 +14,11 @@ class WebHandler {
             name: 'session',
             keys: [this.makeid(14),this.makeid(14)]
         }))
-        
+
         this.app.set('view engine', 'pug');
-        this.app.use(express.static('static'));
-        this.app.use(express.json());
-        this.app.use(express.urlencoded());
+        this.app.use(Express.static('static'));
+        this.app.use(Express.json());
+        this.app.use(Express.urlencoded());
     }
 
     makeid(length) {
@@ -32,13 +33,27 @@ class WebHandler {
     
 
     addPage(url, internal, callback, method){
-        this.app.get(url, function(req,res){
-            if(internal && !this.auth.authenticated(req)){
-                res.redirect('error?code=403');
-            } else {
-                callback(req,res);
-            }
-        });
+        if(method == 'GET'){
+            this.app.get(url, function(req,res){
+                if(internal && !this.auth.authenticated(req)){
+                    res.redirect('error?code=403');
+                } else {
+                    callback(req,res);
+                }
+            });
+        } else {
+            this.app.post(url, function(req,res){
+                if(internal && !this.auth.authenticated(req)){
+                    res.redirect('error?code=403');
+                } else {
+                    callback(req,res);
+                }
+            });
+        }
+    }
+
+    listen() {
+        this.app.listen(config.port, () => console.log("App now listenining!"))
     }
 }
 
