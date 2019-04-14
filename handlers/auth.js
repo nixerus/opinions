@@ -14,8 +14,6 @@ class Authentication {
     }
 
     authenticated(req){
-        console.log(this.authorizedSession)
-        console.log("vs " + req.session.uuid)
         for(let i = 0; i < this.authorizedSession.length; i++){
             if(this.authorizedSession[i] === req.session.uuid){
                 return true;
