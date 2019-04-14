@@ -6,6 +6,10 @@ html
         script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js",integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1",crossorigin="anonymous")
         script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js",integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM",crossorigin="anonymous")
         title Opinions - #{config.name}
+        meta(name='description', content='Give anonymous messages about ' + config.name + ', free of charge')
+        meta(name='og:description', content='Give anonymous messages about ' + config.name + ', free of charge')
+        meta(property='og:site_name' content='Opinions')
+        meta(property='og:title', content=config.name)
     body
         center
             br
