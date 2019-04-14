@@ -36,6 +36,9 @@ class WebHandler {
         const obj = this;
         if(method == 'GET'){
             this.app.get(url, function(req,res){
+                if(!req.session.uuid){
+                    req.session.uuid = obj.makeid(10);
+                }
                 if(internal && !obj.auth.authenticated(req)){
                     res.redirect('/error?code=403');
                 } else {
@@ -45,6 +48,9 @@ class WebHandler {
         } else {
             const obj = this;
             this.app.post(url, function(req,res){
+                if(!req.session.uuid){
+                    req.session.uuid = obj.makeid(10);
+                }
                 if(internal && !obj.auth.authenticated(req)){
                     res.redirect('/error?code=403');
                 } else {

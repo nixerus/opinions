@@ -14,11 +14,14 @@ class Authentication {
     }
 
     authenticated(req){
-        if(req.session.uuid in this.authorizedSession){
-            return true;
-        } else {
-            return false;
+        console.log(this.authorizedSession)
+        console.log("vs " + req.session.uuid)
+        for(let i = 0; i < this.authorizedSession.length; i++){
+            if(this.authorizedSession[i] === req.session.uuid){
+                return true;
+            }
         }
+        return false;
     }
 }
 
