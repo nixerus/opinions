@@ -69,6 +69,31 @@ mongoHandler.setup().then(function(newObj){
         })
     },'GET');
 
+    webHandler.addPage('/login/submit', false, function(req,res){
+        const password = req.body.password;
+        if(password === config.adminPassword){
+            webHandler.auth.authenticateUser(req);
+            res.redirect('/admin/home');
+        } else {
+            res.redirect('/login?error')
+        }
+    },'POST');
+
+    webHandler.addPage('/admin/home', true, function(req,res){
+        mongoHandler.fetchConfig().then(function(config){
+            db.collection("questions").find({answered: false},{limit: 20, sort: {createdAt: -1}}, function(quesErr,quesResult){
+                if(quesErr){
+                    console.error(quesErr);
+                    res.redirect('error');
+                    return;
+                }
+                quesResult.toArray().then(function(arrayOfQuestions){
+                    res.render('adminhome', {questions: arrayOfQuestions, config: config})
+                });
+            });
+        });    
+    },'GET');
+
     webHandler.addPage('/submit', false, function(req,res){
         let obj = {
             ip: req.ip,
