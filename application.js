@@ -2,6 +2,7 @@ const webHandler = require('./handlers/webhandler');
 const config = require('./config/config');
 const request = require('request');
 const fs = require('fs');
+const ObjectID = require('mongodb').ObjectID;
 const mongoHandlerDep = require('./handlers/mongohandler');
 const mongoHandler = new mongoHandlerDep();
 const errorCodes = {
@@ -81,7 +82,7 @@ mongoHandler.setup().then(function(newObj){
 
     webHandler.addPage('/admin/home', true, function(req,res){
         mongoHandler.fetchConfig().then(function(config){
-            db.collection("questions").find({answered: false},{limit: 20, sort: {createdAt: -1}}, function(quesErr,quesResult){
+            db.collection("questions").find({answered: false, archived: false},{limit: 20, sort: {createdAt: -1}}, function(quesErr,quesResult){
                 if(quesErr){
                     console.error(quesErr);
                     res.redirect('error');
@@ -94,6 +95,13 @@ mongoHandler.setup().then(function(newObj){
         });    
     },'GET');
 
+    webHandler.addPage('/admin/reply/:id', true, function(req,res){
+        const reply = req.body.reply;
+        let objId = new ObjectID.createFromHexString(req.params.id);
+        db.collection("questions").updateOne({_id: objId},{$set: {answered: true, answer: reply, answeredTime: new Date().getTime()}})
+        res.redirect('/admin/home');
+    },'POST');
+
     webHandler.addPage('/submit', false, function(req,res){
         let obj = {
             ip: req.ip,
@@ -101,7 +109,8 @@ mongoHandler.setup().then(function(newObj){
             type: req.body.type,
             answered: false,
             answeredTime: 0,
-            createdAt: new Date().getTime()
+            createdAt: new Date().getTime(),
+            archived: false
         }
         db.collection("questions").insertOne(obj);
         res.redirect('/home?success');

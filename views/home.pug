@@ -37,3 +37,13 @@ html
             .container            
                 hr  
                 p.text-muted Here are some things people have been asking #{config.name}...        
+                each ques in questions
+                    .row.justify-content-md-center
+                        .card(style='width: 80%')
+                            .card-body
+                                h5.card-title #{ques.body}
+                                p.card-text 
+                                    b
+                                        i #{config.name} writes:  
+                                    | #{ques.answer}
+                    br
