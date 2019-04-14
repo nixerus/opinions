@@ -22,8 +22,8 @@ mongoHandler.setup().then(function(newObj){
 
     webHandler.addPage('/error', false, function(req,res){
         let errorCode = 500;
-        if(req.params.code){
-            errorCode = req.params.code;
+        if(req.query.code){
+            errorCode = req.query.code;
         }
         const message = errorCodes[errorCode];
 
