@@ -105,9 +105,8 @@ mongoHandler.setup().then(function(newObj){
 
     webHandler.addPage('/submit', false, function(req,res){
         let ip = "";
-        console.log(req.headers);
-        if(req.headers['CF-Connecting-IP'] && config.allowCloudflare){
-            ip = req.headers['CF-Connecting-IP'];
+        if(req.headers['cf-connecting-ip'] && config.allowCloudflare){
+            ip = req.headers['cf-connecting-ip'];
         } else {
             ip = req.ip;
         }
