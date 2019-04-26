@@ -3,6 +3,7 @@ const config = require('./config/config');
 const request = require('request');
 const fs = require('fs');
 const ObjectID = require('mongodb').ObjectID;
+
 const mongoHandlerDep = require('./handlers/mongohandler');
 const mongoHandler = new mongoHandlerDep();
 const errorCodes = {
@@ -104,6 +105,7 @@ mongoHandler.setup().then(function(newObj){
 
     webHandler.addPage('/submit', false, function(req,res){
         let ip = "";
+        console.log(req.headers);
         if(req.headers['CF-Connecting-IP'] && config.allowCloudflare){
             ip = req.headers['CF-Connecting-IP'];
         } else {

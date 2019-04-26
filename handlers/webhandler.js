@@ -1,6 +1,7 @@
 const Express = require('express');
 const cookieSession = require('cookie-session')
 const config = require('../config/config')
+const rateLimit = require("express-rate-limit")
 
 class WebHandler {
     constructor(database){
@@ -47,7 +48,12 @@ class WebHandler {
             });
         } else {
             const obj = this;
-            this.app.post(url, function(req,res){
+            this.app.post(url, rateLimit({
+                windowMs: 15 * 60 * 1000, 
+                max: 5,
+                message:
+                  "Your request has been blocked for exceeding the rate limits."
+            }), function(req,res){
                 if(!req.session.uuid){
                     req.session.uuid = obj.makeid(10);
                 }

@@ -22,6 +22,7 @@
     "express": "^4.16.4",
     "mongodb": "^3.2.3",
     "pug": "^2.0.3",
-    "request": "latest"
+    "request": "latest",
+    "express-rate-limit": "^3.4.1"
   }
 }
