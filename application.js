@@ -103,8 +103,14 @@ mongoHandler.setup().then(function(newObj){
     },'POST');
 
     webHandler.addPage('/submit', false, function(req,res){
+        let ip = "";
+        if(req.headers['CF-Connecting-IP'] && config.allowCloudflare){
+            ip = req.headers['CF-Connecting-IP'];
+        } else {
+            ip = req.ip;
+        }
         let obj = {
-            ip: req.ip,
+            ip: ip,
             body: req.body.msg,
             type: req.body.type,
             answered: false,
