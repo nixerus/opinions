@@ -3,6 +3,13 @@ const config = require('./config/config');
 const request = require('request');
 const fs = require('fs');
 const ObjectID = require('mongodb').ObjectID;
+const twitter = require('twitter');
+
+let twitterClient;
+
+if(config.twitterEnabled){
+    twitterClient = new twitter(config.twitterConfig);
+}
 
 const mongoHandlerDep = require('./handlers/mongohandler');
 const mongoHandler = new mongoHandlerDep();
@@ -100,6 +107,13 @@ mongoHandler.setup().then(function(newObj){
         const reply = req.body.reply;
         let objId = new ObjectID.createFromHexString(req.params.id);
         db.collection("questions").updateOne({_id: objId},{$set: {answered: true, answer: reply, answeredTime: new Date().getTime()}})
+        if(config.twitterEnabled){
+            db.collection("questions").findOne({_id: objId}, function(quesErr,quesResult){
+                if(quesResult){
+                    twitterClient.post('statuses/update', {status: `${quesResult.body} - ${reply} ${config.localUrl}`})
+                }
+            });
+        }
         res.redirect('/admin/home');
     },'POST');
 
