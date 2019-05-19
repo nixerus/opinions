@@ -110,7 +110,7 @@ mongoHandler.setup().then(function(newObj){
         if(config.twitterEnabled){
             db.collection("questions").findOne({_id: objId}, function(quesErr,quesResult){
                 if(quesResult){
-                    twitterClient.post('statuses/update', {status: `${quesResult.body} - ${reply} ${config.localUrl}`})
+                    twitterClient.post('statuses/update', {status: `${quesResult.body} - ${reply} (Ask here: ${config.localUrl})`})
                 }
             });
         }
