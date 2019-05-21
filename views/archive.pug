@@ -14,12 +14,12 @@ html
             ul.navbar-nav.mr-auto
                 li.nav-item.active
                     a.nav-link(href='/admin/home') Admin Home
-                        span.sr-only (current)   
                 li.nav-item
                     a.nav-link(href='/admin/archive') Archive
+                        span.sr-only (current)
         br
     body
-        p  Welcome to Admin View
+        p  Welcome to the archive. Here are all your answered or archived questions..
         br
         center
             .container
@@ -30,13 +30,4 @@ html
                                 h5.card-title #{ques.ip}
                                 h6.card-subtitle.mb-2.text-muted #{ques.type}
                                 p.card-text #{ques.body}
-                                hr
-                                if ques.type == 'ques'
-                                    form(action='/admin/reply/' + ques._id, method='post')
-                                        .input-group.mb-3
-                                            input.form-control(placeholder="thanks so much!",name='reply')
-                                            .input-group-append
-                                                input.btn.btn-primary(type='submit', value='Reply')
-                                a.card-link(href='/admin/move/archive/' + ques._id) Move to Archive
-                                a.card-link(href='/admin/delete/' + ques._id) Delete
                     br

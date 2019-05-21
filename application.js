@@ -117,6 +117,33 @@ mongoHandler.setup().then(function(newObj){
         res.redirect('/admin/home');
     },'POST');
 
+    webHandler.addPage('/admin/delete/:id', true, function(req,res){
+        const objId = new ObjectID.createFromHexString(req.params.id);
+        db.collection("questions").deleteOne({_id: objId});
+        res.redirect('/admin/home')
+    },'GET');
+
+    webHandler.addPage('/admin/move/archive/:id', true, function(req,res){
+        const objId = new ObjectID.createFromHexString(req.params.id);
+        db.collection("questions").updateOne({_id: objId},{$set: {archived: true}})
+        res.redirect('/admin/home')
+    },'GET');
+
+    webHandler.addPage('/admin/archive', true, function(req,res){
+        mongoHandler.fetchConfig().then(function(config){
+            db.collection("questions").find({$or: [{answered: true}, {archived: false}]}, function(quesErr,quesResult){
+                if(quesErr){
+                    console.error(quesErr);
+                    res.redirect('error');
+                    return;
+                }
+                quesResult.toArray().then(function(arrayOfQuestions){
+                    res.render('archive', {questions: arrayOfQuestions, config: config})
+                });
+            });
+        });    
+    },'GET');
+
     webHandler.addPage('/submit', false, function(req,res){
         let ip = "";
         if(req.headers['cf-connecting-ip'] && config.allowCloudflare){
